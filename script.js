@@ -29,14 +29,10 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('btnSearch').addEventListener('click', runSearch);
 });
 
-// ==========================================================
-// ระบบคำนวณและจัดอันดับ (Dynamic Scoring Engine)
-// ==========================================================
 function scoreCrop(crop, province, soil) {
   let score = 0;
   let reasons = [];
 
-  // 1) ความเหมาะสมของชนิดดิน (น้ำหนัก 40 คะแนน)
   if (crop.soils.includes(soil)) {
     score += 40;
     reasons.push(`เหมาะกับ${soil}โดยตรงตามลักษณะนิสัยของพืช`);
@@ -47,7 +43,6 @@ function scoreCrop(crop, province, soil) {
     score += 5;
   }
 
-  // 2) ความเหมาะสมของอุณหภูมิเฉลี่ยจังหวัด (น้ำหนัก 30 คะแนน)
   const t = province.tempAvg;
   if (t >= crop.tmin && t <= crop.tmax) {
     score += 30;
@@ -57,7 +52,6 @@ function scoreCrop(crop, province, soil) {
     score += Math.max(0, 30 - dist * 6);
   }
 
-  // 3) ความเหมาะสมของปริมาณน้ำฝนเฉลี่ยจังหวัด (น้ำหนัก 30 คะแนน)
   const r = province.rainAvg;
   if (r >= crop.rmin && r <= crop.rmax) {
     score += 30;
